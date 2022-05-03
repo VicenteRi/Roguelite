@@ -13,20 +13,21 @@ date	03/05/2022
 int main()
 {
 	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
-	sf::RenderWindow window(sf::VideoMode(desktopMode.width, desktopMode.height, desktopMode.bitsPerPixel), "SFML works!", sf::Style::Fullscreen);
+	sf::RenderWindow window(sf::VideoMode(desktopMode.width, desktopMode.height, desktopMode.bitsPerPixel), "Roguelite", sf::Style::Fullscreen);
 
 	window.setVerticalSyncEnabled(true);
 	window.setKeyRepeatEnabled(false);
 
 	// create a red triangule
 	sf::Texture texture;
-	if (!texture.loadFromFile("content/character.png"))
+	if (!texture.loadFromFile("content/characters.png"))
 	{
 		return EXIT_FAILURE;
 	}
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
-	sprite.setScale(0.3, 0.3);
+	sprite.setTextureRect(sf::IntRect(0, 355, 32, 32));
+	sprite.setScale(2.2,2.2);
 
 	sf::Texture background;
 	if (!background.loadFromFile("content/bg_green.png"))
