@@ -7,13 +7,16 @@ date	03/05/2022
 */
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #define SPRITE_SPEED 5
+
 
 int main()
 {
 	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 	sf::RenderWindow window(sf::VideoMode(desktopMode.width, desktopMode.height, desktopMode.bitsPerPixel), "Roguelite", sf::Style::Fullscreen);
+	sf::View view(sf::Vector2f(0.0f,0.0f), sf::Vector2f(desktopMode.width, desktopMode.height));
 
 	window.setVerticalSyncEnabled(true);
 	window.setKeyRepeatEnabled(false);
@@ -28,13 +31,19 @@ int main()
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(0, 355, 32, 32));
 	sprite.setScale(2.2,2.2);
+	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
+
+
 
 	sf::Texture background;
 	if (!background.loadFromFile("content/bg_green.png"))
 	{
 		return EXIT_FAILURE;
 	}
-	sf::Sprite backgroundSprite(background);
+	sf::Sprite backgroundSprite1(background);
+
+	backgroundSprite1.setPosition(0, 0);
+
 
 	int x = window.getSize().x / 2.;
 	int y = window.getSize().y / 2.;
@@ -44,10 +53,12 @@ int main()
 	bool leftFlag = false;
 	bool rightFlag = false;
 
+
 	sf::Clock timer;
 
 	while (window.isOpen())
 	{
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -67,10 +78,12 @@ int main()
 
 					case sf::Keyboard::Left:
 						leftFlag = true;
+						sprite.setScale(-2.2, 2.2);
 						break;
 
 					case sf::Keyboard::Right:
 						rightFlag = true;
+						sprite.setScale(2.2, 2.2);
 						break;
 
 					default:
@@ -123,10 +136,13 @@ int main()
 		if (y > (int)window.getSize().y)
 			y = window.getSize().y;
 
-		window.clear();
+	
 
+		view.setCenter(x, y);
+		window.clear();
+		window.setView(view);
 		sprite.setPosition(x, y);
-		window.draw(backgroundSprite);
+		window.draw(backgroundSprite1);
 		window.draw(sprite);
 
 		window.display();
